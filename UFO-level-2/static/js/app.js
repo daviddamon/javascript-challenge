@@ -1,5 +1,3 @@
-// UFO Level 1
-
 // from data.js
 var tableData = data;
 console.log(tableData) //check returned data
