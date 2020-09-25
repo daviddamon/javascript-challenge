@@ -4,28 +4,37 @@
 var tableData = data;
 console.log(tableData) //check returned data
 
+//***** Load all data into table and display *****
+
 // get a reference to the table body
 var tbody = d3.select("tbody");
 
 // add data to html table
-tableData.forEach((ufoReport) => {
-   var row = tbody.append("tr");
-   Object.entries(ufoReport).forEach(([key, value]) => {
-      var cell = row.append("td");
-      cell.text(value);
+createTable(tableData);
+
+function createTable(tableData) {
+   tbody.html("");
+   tableData.forEach((ufoReport) => {
+      var row = tbody.append("tr");
+      Object.entries(ufoReport).forEach(([key, value]) => {
+         var cell = row.append("td");
+         cell.text(value);
+      });
    });
- });
+} 
+
+//***** Filter data by selected date and display results *****
 
 // Select the button and form
 var button = d3.select("#filter-btn"); 
 var form = d3.select("#datetime");
 
 // Create event handlers 
-button.on("click", runEnter); 
-form.on("submit",runEnter); 
+button.on("click", updateFilter); 
+form.on("submit",updateFilter);
 
 // Complete the event handler function for the form
-function runEnter() {
+function updateFilter() {
 
    // Prevent the page from refreshing
    d3.event.preventDefault();
@@ -39,7 +48,8 @@ function runEnter() {
    console.log(inputValue);
 
    var filteredData = tableData.filter(sighting => sighting.datetime === inputValue);
-
+   
    console.log(filteredData);
 
+   createTable(filteredData); 
 }; 

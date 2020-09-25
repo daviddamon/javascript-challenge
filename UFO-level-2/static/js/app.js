@@ -1,43 +1,96 @@
+// UFO Level 2
+
 // from data.js
 var tableData = data;
 console.log(tableData) //check returned data
 
-// get a reference to the table body
+//***** Load all data into table and display *****
+
 var tbody = d3.select("tbody");
 
-// add data to html table
-tableData.forEach((ufoReport) => {
-   var row = tbody.append("tr");
-   Object.entries(ufoReport).forEach(([key, value]) => {
-      var cell = row.append("td");
-      cell.text(value);
+createTable(tableData);
+
+function createTable(tableData) {
+   tbody.html("");
+   tableData.forEach((ufoReport) => {
+      var row = tbody.append("tr");
+      Object.entries(ufoReport).forEach(([key, value]) => {
+         var cell = row.append("td");
+         cell.text(value);
+      });
    });
- });
+} 
+
+//***** Filter data by selected inputs and display results *****
 
 // Select the button and form
 var button = d3.select("#filter-btn"); 
-var form = d3.select("#datetime");
+var form = d3.selectAll(".filter");
 
 // Create event handlers 
-button.on("click", runEnter); 
-form.on("submit",runEnter); 
+button.on("click", updateFilter); 
+form.on("change", updateFilter);
 
-// Complete the event handler function for the form
-function runEnter() {
+var filters = {};
 
-   // Prevent the page from refreshing
+function updateFilter() {
+
    d3.event.preventDefault();
 
-   // Select the input element and get the raw HTML node
-   var inputDate = d3.select("#datetime");
+   var inputFilter = d3.select(this).select("input");
+   var inputValue = inputFilter.property("value");
+   var inputID = inputFilter.attr("id");
+   
+   if (inputValue) {
+      filters[inputID] = inputValue;
+   }
+   else {
+      delete filters[inputID];
+   }
+   //filterTable();  ????
+};
 
-   // Get the value property of the input element
-   var inputValue = inputDate.property("value");
+function createTable(filterTable) {
+   tbody.html("");
+   filterTable.forEach((result) => {
+      var row = tbody.append("tr");
+      Object.entries(result).forEach(([key, value]) => {
+         var cell = row.append("td");
+         cell.text(value);
+      });
+   });
+} 
 
-   console.log(inputValue);
 
-   var filteredData = tableData.filter(sighting => sighting.datetime === inputValue);
+// var data = [1, 2, 3, 4]
+// d3.select("body")     // select the body
+//   .selectAll("p")     // empty <p> selections to be used later
+//   .data(data)         // parses data, and runs below operations n times
+//   .enter()            // creates new data-bound element
+//   .append("p")        // append <p> tag for each datum
+//   .text("I'm no. 1")  // changes attribute's value
+
+
+
+
+/* 
+function filterTable() {
+   tableData.filter.forEach(inputValue) = inputFilter
+
+
+
+loop through objects forEach
+tableData.filter
+
+tableData.filter(function(d) { 
+   return ( d.datetime == "inputValue" && 
+            d.city == "inputValue" && 
+            d.state == "inputValue" && 
+            d.country == "inputValue" && 
+            d.shape == "inputValue") 
+})
 
    console.log(filteredData);
 
-}; 
+};  
+*/
