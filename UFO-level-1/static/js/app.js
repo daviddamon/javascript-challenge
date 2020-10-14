@@ -31,7 +31,7 @@ var form = d3.select("#datetime");
 
 // Create event handlers 
 button.on("click", updateFilter); 
-form.on("submit",updateFilter);
+form.on("change",updateFilter);
 
 // Complete the event handler function for the form
 function updateFilter() {
